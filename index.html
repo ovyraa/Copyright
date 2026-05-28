@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telif Hakları - Ovyra.ai</title>
+
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .audio-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .audio-btn:hover {
+            border-color: var(--accent-color);
+            color: #fff;
+            background-color: rgba(88, 166, 255, 0.05);
+        }
+
+        .audio-btn.playing {
+            border-color: #ff7b72;
+            color: #ff7b72;
+            background-color: rgba(255, 123, 114, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #f0f6fc;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "•";
+            color: var(--accent-color);
+            margin-right: 10px;
+            font-size: 1.8rem;
+            line-height: 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .warning-box {
+            background-color: rgba(255, 123, 114, 0.08);
+            border: 1px solid rgba(255, 123, 114, 0.3);
+            border-radius: 6px;
+            padding: 18px;
+            margin-top: 15px;
+        }
+
+        .contact-box {
+            background-color: rgba(88, 166, 255, 0.1);
+            border: 1px dashed var(--accent-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .contact-box a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <button class="audio-btn" id="audioBtn" onclick="toggleSpeech()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="audioIcon">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+
+        <span id="btnText">Sesli Dinle</span>
+    </button>
+
+    <header>
+        <a href="#" class="logo">Ovyra<span>.ai</span></a>
+        <h1>TELİF HAKLARI VE KULLANIM POLİTİKASI</h1>
+    </header>
+
+    <main id="playableContent">
+
+        <p class="intro">
+            Ovyra.ai içerisinde bulunan tüm yazılım sistemleri, yapay zekâ altyapıları,
+            arayüz tasarımları, marka öğeleri, görseller, metinler ve dijital içerikler
+            proje sahibine aittir ve koruma altındadır.
+        </p>
+
+        <section>
+            <h2>DİJİTAL İÇERİK KORUMASI</h2>
+
+            <p>
+                Platform içerisinde yer alan kaynak kodları, kullanıcı arayüzleri,
+                tasarım yapıları, algoritmalar, veri işleme sistemleri ve yapay zekâ
+                bileşenleri izinsiz şekilde kopyalanamaz, çoğaltılamaz veya yeniden dağıtılamaz.
+            </p>
+
+            <p>
+                Ovyra.ai altyapısının herhangi bir bölümünün farklı projelerde kullanılması,
+                ticari amaçlarla çoğaltılması veya sistemin taklit edilmesi kabul edilmez.
+            </p>
+
+            <div class="warning-box">
+                Yetkisiz kullanım, içerik kopyalama, sistem çoğaltma veya sahte sürüm
+                oluşturma girişimleri platform güvenlik politikaları kapsamında değerlendirilebilir.
+            </div>
+        </section>
+
+        <section>
+            <h2>MARKA VE LOGO KULLANIMI</h2>
+
+            <p>
+                Ovyra.ai adı, logosu, görsel kimliği ve platform tasarımı dijital marka
+                bütünlüğünün bir parçasıdır.
+            </p>
+
+            <ul>
+                <li>Logo izinsiz şekilde kullanılamaz,</li>
+                <li>Marka kimliği farklı projelerde taklit edilemez,</li>
+                <li>Platform görünümü birebir kopyalanamaz,</li>
+                <li>Ovyra.ai adı yanıltıcı amaçlarla kullanılamaz.</li>
+            </ul>
+
+            <p style="margin-top:15px;">
+                Platforma ait marka öğelerinin izinsiz kullanımı durumunda erişim
+                kısıtlamaları uygulanabilir.
+            </p>
+        </section>
+
+        <section>
+            <h2>SİSTEM VE YAZILIM GÜVENLİĞİ</h2>
+
+            <p>
+                Ovyra.ai sistemleri düzenli olarak güncellenmekte ve korunmaktadır.
+                Platform üzerinde bulunan yazılım altyapısının tersine mühendislik,
+                otomatik veri çekme, yetkisiz erişim veya sistem manipülasyonu amacıyla
+                kullanılması yasaktır.
+            </p>
+
+            <p>
+                Platform güvenliğini ihlal etmeye yönelik girişimler kayıt altına alınabilir
+                ve erişim engeli ile sonuçlanabilir.
+            </p>
+        </section>
+
+        <section>
+            <h2>INTERNATIONAL NOTICE</h2>
+
+            <p>
+                Unauthorized copying, reproduction, reverse engineering,
+                redistribution or commercial use of any part of Ovyra.ai
+                is prohibited.
+            </p>
+
+            <p>
+                All software systems, AI structures, branding materials,
+                visual assets and digital components belong to the project owner.
+            </p>
+        </section>
+
+        <section>
+            <h2>İLETİŞİM</h2>
+
+            <p>
+                Telif hakları, marka kullanımı veya içerik politikalarıyla ilgili
+                sorular için aşağıdaki e-posta adresi üzerinden iletişime geçebilirsiniz:
+            </p>
+
+            <div class="contact-box">
+                <strong>Telif Hakları İletişim:</strong><br>
+                <a href="mailto:ovyraai+telif@gmail.com">
+                    ovyraai+telif@gmail.com
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Ovyra.ai. Tüm hakları saklıdır.</p>
+    </footer>
+
+</div>
+
+<script>
+    let synth = window.speechSynthesis;
+    let utterance = null;
+    let isPlaying = false;
+
+    function toggleSpeech() {
+        const btn = document.getElementById('audioBtn');
+        const btnText = document.getElementById('btnText');
+        const icon = document.getElementById('audioIcon');
+
+        if (isPlaying) {
+
+            synth.cancel();
+            isPlaying = false;
+
+            btn.classList.remove('playing');
+            btnText.innerText = "Sesli Dinle";
+
+            icon.innerHTML =
+                '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+
+        } else {
+
+            const textToRead =
+                document.getElementById('playableContent').innerText;
+
+            utterance = new SpeechSynthesisUtterance(textToRead);
+
+            const voices = synth.getVoices();
+
+            const naturalTurkishVoice = voices.find(voice =>
+                voice.lang === 'tr-TR' &&
+                (
+                    voice.name.includes('Google') ||
+                    voice.name.includes('Natural') ||
+                    voice.name.includes('Standard-A')
+                )
+            ) || voices.find(voice => voice.lang === 'tr-TR');
+
+            if (naturalTurkishVoice) {
+                utterance.voice = naturalTurkishVoice;
+            }
+
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+
+            utterance.onend = () => {
+                isPlaying = false;
+
+                btn.classList.remove('playing');
+                btnText.innerText = "Sesli Dinle";
+
+                icon.innerHTML =
+                    '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+            };
+
+            synth.speak(utterance);
+
+            isPlaying = true;
+            btn.classList.add('playing');
+            btnText.innerText = "Durdur";
+
+            icon.innerHTML =
+                '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        }
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = () => {};
+    }
+</script>
+
+</body>
+  </html>
